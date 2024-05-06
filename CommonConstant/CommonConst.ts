@@ -4,5 +4,6 @@ export class CommonConst {
   static NO_OF_CLAIM: string = "0";
   static EMAIL: string = "autoecics@gmail.com";
   static MOBILE_NO: string = "89898989";
-  static DEV_URL: string = "https://www.triceratopdev.com/";
+  static UAT_URL: string = "https://www.triceratopdev.com/";
+  static DEV_URL: string = "https://ecics-dev.tdt.asia/";
 }

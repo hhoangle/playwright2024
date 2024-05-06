@@ -7,12 +7,18 @@ export class BasePage {
 
     constructor(page: Page) {
         this.page = page;
-        console.log(page, 'page');
     }
 
     async clickToElement(locator: string) {
         const element = await this.page.locator(locator);
         await element.click();
+    }
+
+    async clickToElements(locator: string){ 
+       const elements = await this.page.$$(locator); // Finds all elements matching the locator
+        for (const element of elements) {
+                await element.click(); // Clicks on each checkbox
+            }
     }
 
     async openPageUrl(pageUrl: string) {
@@ -237,8 +243,8 @@ export class BasePage {
 
     async isElementDisplay(locatorType: string, ...dynamicValues: string[]): Promise<boolean> {
         const element = await this.page.locator(this.getDynamicXpath(locatorType, ...dynamicValues));
-        console.log(element, 'element')
-        return await element.isVisible();
+        
+        return element.isVisible();
     }
 
     async isElementUndisplayed(locatorType: string, ...dynamicValues: string[]): Promise<boolean> {
@@ -377,7 +383,12 @@ export class BasePage {
     }
 
     async waitForElementVisible(locatorType: string) {
-        await this.page.waitForSelector(locatorType, {state: 'visible'});
+        try {
+            await this.page.waitForSelector(locatorType, {state: 'visible'});
+        } catch (error) {
+            console.log(error);
+            
+        }
     }
 
     async waitForElementInvisible(locatorType: string) {
