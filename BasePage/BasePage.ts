@@ -15,8 +15,8 @@ export class BasePage {
     }
 
     async clickToElements(locator: string){ 
-       const elements = await this.page.$$(locator); // Finds all elements matching the locator
-        for (const element of elements) {
+       const elements = await this.page.locator(locator).all(); // Finds all elements matching the locator
+        for (const element of await elements) {
                 await element.click(); // Clicks on each checkbox
             }
     }

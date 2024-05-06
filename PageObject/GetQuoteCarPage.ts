@@ -164,6 +164,15 @@ export class GetQuoteCarPage extends BasePage {
   }
 
   async selectAllAddOn (){
-    
+    await this.waitForElementVisible(GetQuoteCarPageUI.CONTINUE_BUTTON);
+    await this.clickToElements(GetQuoteCarPageUI.ADD_ONS_CHECKBOX);
+  }
+
+  async getTotalPremiumInAddOnPage(){
+    return await this.getElementText(GetQuoteCarPageUI.TOTAL_PREMIUM_IN_ADD_ON_PAGE)
+  }
+
+  async clickContinue(){
+    await this.clickToElement(GetQuoteCarPageUI.CONTINUE_BUTTON)
   }
 }

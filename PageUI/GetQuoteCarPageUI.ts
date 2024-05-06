@@ -26,4 +26,7 @@ export class GetQuoteCarPageUI {
     public static SELECT_PLANS_BUTTON: string = "(//div[@class='orange-button-filled'][normalize-space()='Select'])[5]";
     public static YES_CONTINUE_BUTTON: string = "//button[text()='Yes, Continue']";
     public static ADD_ONS_TITLE: string = "//p[@class='text-title text-semi-bold mb-1']";
+    public static CONTINUE_BUTTON: string = "//p[text()='Continue']"
+    public static ADD_ONS_CHECKBOX: string = "//input[@type='checkbox']"
+    public static TOTAL_PREMIUM_IN_ADD_ON_PAGE: string = "//p[text()='Total Premium']//following-sibling::h3"
 }

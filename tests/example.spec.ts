@@ -54,6 +54,10 @@ test.describe("Home Page Tests", () => {
     await getQuoteCarPage.selectComprehensive();
     await getQuoteCarPage.clickYesContinueButton();
     await getQuoteCarPage.selectAllAddOn();
+    let totalPremium = await getQuoteCarPage.getTotalPremiumInAddOnPage();
+    await getQuoteCarPage.clickContinue();
+    
+
 
 
     await getQuoteCarPage.page.waitForTimeout(5000)
