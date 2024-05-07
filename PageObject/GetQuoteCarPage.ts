@@ -81,9 +81,7 @@ export class GetQuoteCarPage extends BasePage {
 
   async selectDOB() {
     const currentDate: Date = new Date();
-    const increasedDate: Date = new Date(currentDate);
-    increasedDate.setDate(increasedDate.getDate() + 1);
-    const finalDate: Date = new Date(increasedDate);
+    const finalDate: Date = new Date(currentDate);
     finalDate.setFullYear(finalDate.getFullYear() - 25);
 
     const day: string = String(finalDate.getDate()).padStart(2, "0");
@@ -130,29 +128,16 @@ export class GetQuoteCarPage extends BasePage {
   }
 
   async isPlansNameDisplayed() {
-    await this.waitForElementVisible(GetQuoteCarPageUI.PLANS_HEADER)
+    await this.waitForElementVisible(GetQuoteCarPageUI.PLANS_HEADER);
     
-    const PlanHeader = this.isElementDisplay(
-      GetQuoteCarPageUI.PLANS_HEADER
-    );
-    const ThirdPartyTitle = this.isElementDisplay(
-      GetQuoteCarPageUI.THIRD_PARTY_TITLE
-    );
-    const Conprehensive = this.isElementDisplay(
-      GetQuoteCarPageUI.COMPREHENSIVE_TITLE
-    );
-    const ThirdPartyFireTheftTitle = this.isElementDisplay(
-      GetQuoteCarPageUI.THIRD_PARTY_FIRE_AND_THIEFT_TITLE
-    );
+    const [PlanHeader, ThirdPartyTitle, Comprehensive, ThirdPartyFireTheftTitle] = await Promise.all([
+      this.isElementDisplay(GetQuoteCarPageUI.PLANS_HEADER),
+      this.isElementDisplay(GetQuoteCarPageUI.THIRD_PARTY_TITLE),
+      this.isElementDisplay(GetQuoteCarPageUI.COMPREHENSIVE_TITLE),
+      this.isElementDisplay(GetQuoteCarPageUI.THIRD_PARTY_FIRE_AND_THIEFT_TITLE)
+    ]);
 
-    Promise.all([PlanHeader, ThirdPartyTitle, Conprehensive, ThirdPartyFireTheftTitle])
-    .then(results => {
-        return results[0] && results[1]&& results[2]&& results[3]
-    })
-    .catch(error => {
-        console.log('isPlansNameDisplayed', error);
-        
-    })   
+    return PlanHeader && ThirdPartyTitle && Comprehensive && ThirdPartyFireTheftTitle;
   }
 
   async selectComprehensive() {
@@ -174,5 +159,31 @@ export class GetQuoteCarPage extends BasePage {
 
   async clickContinue(){
     await this.clickToElement(GetQuoteCarPageUI.CONTINUE_BUTTON)
+  }
+
+  async getTotalPremiumInDetailPage(){
+    return await this.getElementText(GetQuoteCarPageUI.TOTAL_PREMIUM_IN_DETAIL_PAGE)
+  }
+
+  async getAddOnList(){
+    await this.waitForElementVisible(GetQuoteCarPageUI.CONTINUE_BUTTON);
+    return await this.getElementsText(GetQuoteCarPageUI.ADD_ONS)
+  }
+
+  async insertVehicleRegistrationNumber(vehicleRegNo: string){
+    await this.sendKeyToElement(GetQuoteCarPageUI.VEHICLE_REGISTRATION_NUMBER, vehicleRegNo);
+  }
+
+  async insertChassisNo(chassisNo: string){
+    await this.sendKeyToElement(GetQuoteCarPageUI.CHASSIS_NUMBER_FIELD, chassisNo);
+  }
+
+  async insertEngineNo(engineNo: string){
+    await this.sendKeyToElement(GetQuoteCarPageUI.ENGINE_NUMBER_FIELD, engineNo);
+  }
+
+  async selectHirePurchaseCompany(){
+    await this.clickToElement(GetQuoteCarPageUI.HIRE_PURCHASE_COMPANY_DROPDOWN);
+    await this.clickToElement(GetQuoteCarPageUI.HIRE_PURCHASE_COMPANY_OPTION)
   }
 }

@@ -3,7 +3,6 @@ import { CommonConst } from "../CommonConstant/CommonConst";
 import { HomePage } from "../PageObject/HomePage";
 import { ProductPage } from "../PageObject/ProductPage";
 import { GetQuoteCarPage } from "../PageObject/GetQuoteCarPage";
-import { log } from "console";
 
 let homePage: HomePage;
 let productPage: ProductPage;
@@ -11,56 +10,169 @@ let getQuoteCarPage: GetQuoteCarPage;
 let browserContext: BrowserContext;
 let page: Page;
 
+
 test.beforeEach(async () => {
   const browser = await chromium.launch({
     headless: false,
     args: ["--start-maximized"],
   });
   browserContext = await browser.newContext();
-  const page = await browserContext.newPage();
+  page = await browserContext.newPage();
   await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.goto(CommonConst.UAT_URL);
+  await Promise.all([
+    page.waitForNavigation(), // The promise to wait for navigation
+    page.goto(CommonConst.DEV_URL) // The promise returned by page.goto()
+  ]);
   homePage = new HomePage(page);
   productPage = new ProductPage(page);
   getQuoteCarPage = new GetQuoteCarPage(page);
+  
 });
 
 test.describe("Home Page Tests", () => {
   test("Check Elements in Home page", async () => {
-    expect(homePage.isHomePageTitleVisible()).toBeTruthy();
-    expect(homePage.isPersonalInsuranceButtonVisible()).toBeTruthy();
-    expect(homePage.isContactInformationVisible()).toBeTruthy();
+    await test.step("Check if Home page title is visible", async () => {
+      expect(await homePage.isHomePageTitleVisible()).toBeTruthy();
+    });
+
+    await test.step("Check if Personal Insurance button is visible", async () => {
+      expect(await homePage.isPersonalInsuranceButtonVisible()).toBeTruthy();
+    });
+
+    await test.step("Check if Contact Information is visible", async () => {
+      expect(await homePage.isContactInformationVisible()).toBeTruthy();
+    });
   });
 
   test("Get quote car - Comprehensive", async () => {
-    await homePage.clickProductButton();
-    await expect(productPage.isProductPageVisible()).toBeTruthy();
-    await productPage.clickBuyPrivateMotorCar();
-    await productPage.clickBuy();
-    await getQuoteCarPage.selectVehicleMake();
-    await getQuoteCarPage.selectVehicleModel();
-    await getQuoteCarPage.selectFirstRegisteredIn();
-    await getQuoteCarPage.inputVehicleRegistrationNumber(CommonConst.VEHICLE_REGISTRATION_NUMBER);
-    await getQuoteCarPage.selectPolicyStartDate();
-    await getQuoteCarPage.selectPolicyEndDate();
-    await getQuoteCarPage.selectDOB();
-    await getQuoteCarPage.selectDrivingExperience(CommonConst.DRIVING_EXPERIENCE);
-    await getQuoteCarPage.selectNCD();
-    await getQuoteCarPage.selectNoOfClaim(CommonConst.NO_OF_CLAIM);
-    await getQuoteCarPage.inputEmail(CommonConst.EMAIL);
-    await getQuoteCarPage.inputMobileNo(CommonConst.MOBILE_NO);
-    await getQuoteCarPage.clickCheckPrice();
-    expect(getQuoteCarPage.isPlansNameDisplayed()).toBeTruthy();
-    await getQuoteCarPage.selectComprehensive();
-    await getQuoteCarPage.clickYesContinueButton();
-    await getQuoteCarPage.selectAllAddOn();
-    let totalPremium = await getQuoteCarPage.getTotalPremiumInAddOnPage();
-    await getQuoteCarPage.clickContinue();
+    let getQuoteData = {
+      vehicleMake : "",
+      vehicleModel : "",
+      policyStartDate : "",
+      policyEndDate : "",
+      dob : "",
+      email: "",
+      mobileNo: "",
+    }
+
+    await test.step("Click on Product button", async () => {
+      await homePage.clickProductButton();
+    });
+
+    await test.step("Check if Product page is visible", async () => {
+      expect(await productPage.isProductPageVisible()).toBeTruthy();
+    });
+
+    await test.step("Click on Buy Private Motor Car", async () => {
+      await productPage.clickBuyPrivateMotorCar();
+    });
+
+    await test.step("Click on Buy", async () => {
+      await productPage.clickBuy();
+    });
+
+    await test.step("Select Vehicle Make", async () => {
+      await getQuoteCarPage.selectVehicleMake();
+    });
+
+    await test.step("Select Vehicle Model", async () => {
+      await getQuoteCarPage.selectVehicleModel();
+    });
+
+    await test.step("Select First Registered In", async () => {
+      await getQuoteCarPage.selectFirstRegisteredIn();
+    });
+
+    await test.step("Input Vehicle Registration Number", async () => {
+      await getQuoteCarPage.inputVehicleRegistrationNumber(CommonConst.VEHICLE_REGISTRATION_NUMBER);
+    });
+
+    await test.step("Select Policy Start Date", async () => {
+      await getQuoteCarPage.selectPolicyStartDate();
+    });
+
+    await test.step("Select Policy End Date", async () => {
+      await getQuoteCarPage.selectPolicyEndDate();
+    });
+
+    await test.step("Select DOB", async () => {
+      await getQuoteCarPage.selectDOB();
+    });
+
+    await test.step("Select Driving Experience", async () => {
+      await getQuoteCarPage.selectDrivingExperience(CommonConst.DRIVING_EXPERIENCE);
+    });
+
+    await test.step("Select NCD", async () => {
+      await getQuoteCarPage.selectNCD();
+    });
+
+    await test.step("Select No Of Claim", async () => {
+      await getQuoteCarPage.selectNoOfClaim(CommonConst.NO_OF_CLAIM);
+    });
+
+    await test.step("Input Email", async () => {
+      await getQuoteCarPage.inputEmail(CommonConst.EMAIL);
+    });
+
+    await test.step("Input Mobile No", async () => {
+      await getQuoteCarPage.inputMobileNo(CommonConst.MOBILE_NO);
+    });
+
+    await test.step("Click on Check Price", async () => {
+      await getQuoteCarPage.clickCheckPrice();
+    });
+
+    await test.step("Check if Plans Name is displayed", async () => {
+      expect(getQuoteCarPage.isPlansNameDisplayed()).toBeTruthy();
+    });
+
+    await test.step("Select Comprehensive", async () => {
+      await getQuoteCarPage.selectComprehensive();
+    });
+
+    await test.step("Click on Yes Continue Button", async () => {
+      await getQuoteCarPage.clickYesContinueButton();
+    });
+
+    await test.step("Check Add-On List", async () => {
+      let addOnList = CommonConst.ADD_ON_LIST;
+      let actualAddOnList = await getQuoteCarPage.getAddOnList();
+      console.log(addOnList);
+      expect(addOnList).toEqual(actualAddOnList);
+    });
+
+    await test.step("Select All Add-On", async () => {
+      await getQuoteCarPage.selectAllAddOn();
+    });
+
+    let totalPremiumInAddOnPage: any;
+
+    await test.step("Get Total Premium in Add-On Page", async () => {
+      totalPremiumInAddOnPage = await getQuoteCarPage.getTotalPremiumInAddOnPage();
+    });
+
+    await test.step("Click on Continue", async () => {
+      await getQuoteCarPage.clickContinue();
+    });
+
+    await test.step("Get Total Premium in Detail Page", async () => {
+      let totalPremiumDetailPage = await getQuoteCarPage.getTotalPremiumInDetailPage();
+      expect(totalPremiumInAddOnPage).toEqual(totalPremiumDetailPage);
+    });
     
+    await test.step("Insert Chassis No.", async () => {
+      await getQuoteCarPage.insertChassisNo(CommonConst.CHASSIS_NO);
+    });
 
+    await test.step("Insert Engine No.", async () => {
+      await getQuoteCarPage.insertEngineNo(CommonConst.ENGINE_NO);
+    });
 
+    await test.step("Select hire purchase company", async () => {
+      await getQuoteCarPage.selectHirePurchaseCompany();
+    });
 
-    await getQuoteCarPage.page.waitForTimeout(5000)
-
+    await getQuoteCarPage.page.waitForTimeout(5000);
   });
 });

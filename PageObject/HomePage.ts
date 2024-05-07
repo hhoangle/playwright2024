@@ -30,9 +30,12 @@ export class HomePage extends BasePage {
 
 
     async isHomePageTitleVisible() {
-        return await this.isElementDisplay(HomePageUI.HOME_PAGE_TITLE) &&
-            await this.isElementDisplay(HomePageUI.HOME_PAGE_TITLE_2) &&
-            await this.isElementDisplay(HomePageUI.HOME_PAGE_DESCRIPTION)
+        const isTitleVisible = await Promise.all([
+            this.isElementDisplay(HomePageUI.HOME_PAGE_TITLE),
+            this.isElementDisplay(HomePageUI.HOME_PAGE_TITLE_2),
+            this.isElementDisplay(HomePageUI.HOME_PAGE_DESCRIPTION)
+        ]);
+        return isTitleVisible.every((isVisible) => isVisible);
     }
 
     async isPersonalInsuranceButtonVisible() {

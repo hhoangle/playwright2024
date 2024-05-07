@@ -6,4 +6,19 @@ export class CommonConst {
   static MOBILE_NO: string = "89898989";
   static UAT_URL: string = "https://www.triceratopdev.com/";
   static DEV_URL: string = "https://ecics-dev.tdt.asia/";
+  static ADD_ON_LIST = ["Any Workshops", "Loss Of Use", "Medical Expenses"
+    ,"Key Replacement Cover", "Add Additional Named Driver(s)", "50% Buy Up NCD",
+    "24x7 Roadside Assistance", "New for Old Replacement","Personal Accident+",
+    "Adjustable Excess"
+  ]
+  static CHASSIS_NO: string = generateRandomNumber();
+  static ENGINE_NO: string = generateRandomNumber();
+}
+
+function generateRandomNumber(): string {
+  let result = '';
+  for (let i = 0; i < 10; i++) {
+    result += Math.floor(Math.random() * 10); // Generate a random integer from 0 to 9
+  }
+  return result;
 }

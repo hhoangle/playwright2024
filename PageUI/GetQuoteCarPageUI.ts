@@ -29,4 +29,11 @@ export class GetQuoteCarPageUI {
     public static CONTINUE_BUTTON: string = "//p[text()='Continue']"
     public static ADD_ONS_CHECKBOX: string = "//input[@type='checkbox']"
     public static TOTAL_PREMIUM_IN_ADD_ON_PAGE: string = "//p[text()='Total Premium']//following-sibling::h3"
-}
+    public static TOTAL_PREMIUM_IN_DETAIL_PAGE: string = "//p[text()='Total Premium']//following-sibling::h3"
+    public static ADD_ONS: string = "//p[@class='text-title text-semi-bold mb-1']"
+    public static CHASSIS_NUMBER_FIELD: string = "//p[text()='Chassis No.']//following-sibling::*//input";
+    public static ENGINE_NUMBER_FIELD: string = "//p[text()='Engine No.']//following-sibling::*//input";
+    public static HIRE_PURCHASE_COMPANY_DROPDOWN: string = "//input[@placeholder='Select hire purchase company']";
+    public static HIRE_PURCHASE_COMPANY_OPTION: string = "//li[contains(text(),'Popular')]//following-sibling::*//ul//li[1]";
+
+  }

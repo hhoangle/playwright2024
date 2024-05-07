@@ -153,7 +153,7 @@ export class BasePage {
         return element ? await element.innerText() : '';
     }
 
-    async getElementsTextByXPath(xpath: string): Promise<string[]> {
+    async getElementsText(xpath: string): Promise<string[]> {
         const elements = await this.page.$$(xpath);
         const textList: string[] = [];
 
@@ -213,8 +213,12 @@ export class BasePage {
 
     async getHexaColorFromRGBA(rgbaValue: string): Promise<string> {
         const hexColor = await this.page.evaluate((rgbaValue) => {
-            const [r, g, b] = rgbaValue.match(/\d+/g).map(Number);
-            return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+            const match = rgbaValue.match(/\d+/g);
+            if (match) {
+                const [r, g, b] = match.map(Number);
+                return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+            }
+            return '';
         }, rgbaValue);
         return hexColor;
     }
@@ -241,10 +245,16 @@ export class BasePage {
         }
     }
 
-    async isElementDisplay(locatorType: string, ...dynamicValues: string[]): Promise<boolean> {
-        const element = await this.page.locator(this.getDynamicXpath(locatorType, ...dynamicValues));
-        
-        return element.isVisible();
+    async isElementDisplay(locatorType: string): Promise<boolean> {
+        const element = this.page.locator(locatorType);
+        const timeout = 5000; // Timeout in milliseconds
+        try {
+            await element.waitFor({ state: 'visible', timeout });
+            return true;
+        } catch (error) {
+            console.error(`Element with locator ${locatorType} is not visible.`);
+            return false;
+        }
     }
 
     async isElementUndisplayed(locatorType: string, ...dynamicValues: string[]): Promise<boolean> {
@@ -321,17 +331,12 @@ export class BasePage {
         });
         await this.page.waitForTimeout(1000); // sleepInSecond(1)
         await element.evaluate((el, style) => {
-            el.setAttribute('style', style);
-        }, originalStyle);
-    }
-
-    async clickToElementByJS(locator: string) {
-        await this.page.evaluate((locator) => {
-            const element = document.querySelector(locator) as HTMLElement;
-            if (element) {
-                element.click();
+            if (style) {
+                el.setAttribute('style', style);
+            } else {
+                el.removeAttribute('style');
             }
-        }, locator);
+        }, originalStyle);
     }
 
 
@@ -356,7 +361,7 @@ export class BasePage {
 
     async getTextByJs(locatorType: string): Promise<string> {
         return await this.page.$eval(locatorType, (element) => {
-            return element.textContent;
+            return element.textContent || '';
         });
     }
 
