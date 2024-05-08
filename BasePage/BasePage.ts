@@ -195,8 +195,8 @@ export class BasePage {
         await childItem.click();
     }
 
-    async getElementAttribute(locatorType: string, attributeName: string, ...dynamicValues: string[]): Promise<string | null> {
-        return await this.page.locator(this.getDynamicXpath(locatorType, ...dynamicValues)).getAttribute(attributeName);
+    async getElementAttribute(locatorType: string, attributeName: string, ...dynamicValues: string[]): Promise<string> {
+        return await this.page.locator(this.getDynamicXpath(locatorType, ...dynamicValues)).getAttribute(attributeName) || '';
     }
 
     async getCssValue(locator: string, propertyName: string): Promise<string> {

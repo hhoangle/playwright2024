@@ -21,7 +21,7 @@ test.beforeEach(async () => {
   await page.setViewportSize({ width: 1920, height: 1080 });
   await Promise.all([
     page.waitForNavigation(), // The promise to wait for navigation
-    page.goto(CommonConst.DEV_URL) // The promise returned by page.goto()
+    page.goto(CommonConst.UAT_URL) // The promise returned by page.goto()
   ]);
   homePage = new HomePage(page);
   productPage = new ProductPage(page);
@@ -146,7 +146,7 @@ test.describe("Home Page Tests", () => {
       await getQuoteCarPage.selectAllAddOn();
     });
 
-    let totalPremiumInAddOnPage: any;
+    let totalPremiumInAddOnPage: string;
 
     await test.step("Get Total Premium in Add-On Page", async () => {
       totalPremiumInAddOnPage = await getQuoteCarPage.getTotalPremiumInAddOnPage();
@@ -168,11 +168,52 @@ test.describe("Home Page Tests", () => {
     await test.step("Insert Engine No.", async () => {
       await getQuoteCarPage.insertEngineNo(CommonConst.ENGINE_NO);
     });
-
+    
+    let hirePurchaseCompany: string;
     await test.step("Select hire purchase company", async () => {
-      await getQuoteCarPage.selectHirePurchaseCompany();
+       hirePurchaseCompany = await getQuoteCarPage.selectHirePurchaseCompany();
+       console.log(hirePurchaseCompany);
     });
 
-    await getQuoteCarPage.page.waitForTimeout(5000);
+    await test.step("Input main driver full name", async () => {
+      getQuoteCarPage.inputMainDriverFullName(CommonConst.MAIN_DRIVER_FULL_NAME);
+      await getQuoteCarPage.page.waitForTimeout(1000);
+    });
+    
+    await test.step("Input NRIC/FIN", async () => {
+      getQuoteCarPage.inputNRICFIN(CommonConst.NRIC_FIN_MAIN_DRIVER);
+    });
+
+    await test.step("Select gender", async () => {
+      await getQuoteCarPage.selectGender();
+      await getQuoteCarPage.page.waitForTimeout(1000);
+    });
+
+    await test.step("Select marital status", async () => {
+      await getQuoteCarPage.selectMaritalStatus();
+    });
+
+    await test.step("Input address", async () => {
+      await getQuoteCarPage.inputAddress(CommonConst.MAIN_DRIVER_ADDRESS);
+    });
+
+    await test.step("Input postcode", async () => {
+      await getQuoteCarPage.inputPostcode(CommonConst.MAIN_DRIVER_POSTCODE);
+    });
+
+    await test.step("Input additional named driver", async () => {
+      await getQuoteCarPage.inputAdditionalNamedDriver(CommonConst.ADDITIONAL_DRIVER_FULL_NAME);
+    });
+
+    await test.step("Input NRIC/FIN", async () => {
+      await getQuoteCarPage.inputAdditionalNRIC(CommonConst.ADDITIONAL_DRIVER_NRIC_FIN);
+    });
+
+    await test.step("Select DOB", async () => {
+      await getQuoteCarPage.selectAdditionalDriverDOB();
+    });
+
+
+    await getQuoteCarPage.page.waitForTimeout(10000);
   });
 });

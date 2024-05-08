@@ -10,6 +10,7 @@ import { testPlanFilter } from "allure-playwright/dist/testplan";
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  timeout: 5 * 60 * 1000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -20,12 +21,30 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 5 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [["line"], ["allure-playwright"], ["jest-stare"],['html', { open: 'always' }]],
+  
+  grep: testPlanFilter(),
+  reporter: [["line"], [
+    "allure-playwright",
+    {
+      detail: true,
+      outputFolder: "allure-results",
+      suiteTitle: true,
+      categories: [
+        {
+          name: "Outdated tests",
+          messageRegex: ".*FileNotFound.*",
+        },
+      ],
+      environmentInfo: {
+        framework: "playwright",
+      },
+    },
+  ], ["jest-stare"],['html', { open: 'always' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-
+    screenshot: 'only-on-failure',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },

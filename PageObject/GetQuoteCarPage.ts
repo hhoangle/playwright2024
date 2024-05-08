@@ -129,7 +129,7 @@ export class GetQuoteCarPage extends BasePage {
 
   async isPlansNameDisplayed() {
     await this.waitForElementVisible(GetQuoteCarPageUI.PLANS_HEADER);
-    
+
     const [PlanHeader, ThirdPartyTitle, Comprehensive, ThirdPartyFireTheftTitle] = await Promise.all([
       this.isElementDisplay(GetQuoteCarPageUI.PLANS_HEADER),
       this.isElementDisplay(GetQuoteCarPageUI.THIRD_PARTY_TITLE),
@@ -148,42 +148,90 @@ export class GetQuoteCarPage extends BasePage {
     await this.clickToElement(GetQuoteCarPageUI.YES_CONTINUE_BUTTON);
   }
 
-  async selectAllAddOn (){
+  async selectAllAddOn() {
     await this.waitForElementVisible(GetQuoteCarPageUI.CONTINUE_BUTTON);
     await this.clickToElements(GetQuoteCarPageUI.ADD_ONS_CHECKBOX);
   }
 
-  async getTotalPremiumInAddOnPage(){
-    return await this.getElementText(GetQuoteCarPageUI.TOTAL_PREMIUM_IN_ADD_ON_PAGE)
+  async getTotalPremiumInAddOnPage() {
+    return await this.getElementText(GetQuoteCarPageUI.TOTAL_PREMIUM_IN_ADD_ON_PAGE);
   }
 
-  async clickContinue(){
-    await this.clickToElement(GetQuoteCarPageUI.CONTINUE_BUTTON)
+  async clickContinue() {
+    await this.clickToElement(GetQuoteCarPageUI.CONTINUE_BUTTON);
   }
 
-  async getTotalPremiumInDetailPage(){
-    return await this.getElementText(GetQuoteCarPageUI.TOTAL_PREMIUM_IN_DETAIL_PAGE)
+  async getTotalPremiumInDetailPage() {
+    return await this.getElementText(GetQuoteCarPageUI.TOTAL_PREMIUM_IN_DETAIL_PAGE);
   }
 
-  async getAddOnList(){
+  async getAddOnList() {
     await this.waitForElementVisible(GetQuoteCarPageUI.CONTINUE_BUTTON);
-    return await this.getElementsText(GetQuoteCarPageUI.ADD_ONS)
+    return await this.getElementsText(GetQuoteCarPageUI.ADD_ONS);
   }
 
-  async insertVehicleRegistrationNumber(vehicleRegNo: string){
+  async insertVehicleRegistrationNumber(vehicleRegNo: string) {
     await this.sendKeyToElement(GetQuoteCarPageUI.VEHICLE_REGISTRATION_NUMBER, vehicleRegNo);
   }
 
-  async insertChassisNo(chassisNo: string){
+  async insertChassisNo(chassisNo: string) {
     await this.sendKeyToElement(GetQuoteCarPageUI.CHASSIS_NUMBER_FIELD, chassisNo);
   }
 
-  async insertEngineNo(engineNo: string){
+  async insertEngineNo(engineNo: string) {
     await this.sendKeyToElement(GetQuoteCarPageUI.ENGINE_NUMBER_FIELD, engineNo);
   }
 
-  async selectHirePurchaseCompany(){
+  async selectHirePurchaseCompany() {
     await this.clickToElement(GetQuoteCarPageUI.HIRE_PURCHASE_COMPANY_DROPDOWN);
-    await this.clickToElement(GetQuoteCarPageUI.HIRE_PURCHASE_COMPANY_OPTION)
+    await this.clickToElement(GetQuoteCarPageUI.HIRE_PURCHASE_COMPANY_OPTION);
+    return await this.getElementAttribute(GetQuoteCarPageUI.HIRE_PURCHASE_COMPANY_NAME, 'textvalue');
+  }
+
+  async inputMainDriverFullName(value) {
+    await this.sendKeyToElement(GetQuoteCarPageUI.MAIN_DRIVER_FULL_NAME, value);
+  }
+
+  async inputNRICFIN(value) {
+    await this.sendKeyToElement(GetQuoteCarPageUI.MAIN_DRIVER_NRIC_FIELD, value);
+  }
+
+  async selectGender() {
+    await this.clickToElement(GetQuoteCarPageUI.MAIN_DRIVER_GENDER);
+    await this.clickToElement(GetQuoteCarPageUI.GENDER_OPTION);
+  }
+
+  async selectMaritalStatus() {
+    await this.clickToElement(GetQuoteCarPageUI.MARITAL_STATUS_DROPDOWN);
+    await this.clickToElement(GetQuoteCarPageUI.MARITAL_STATUS_OPTION);
+  }
+
+  async inputAddress(value) {
+    await this.sendKeyToElement(GetQuoteCarPageUI.MAIN_DRIVER_ADDRESS, value);
+  }
+
+  async inputPostcode(value) {
+    await this.sendKeyToElement(GetQuoteCarPageUI.MAIN_DRIVER_POSTCODE, value);
+  }
+
+  async inputAdditionalNamedDriver(value) {
+    await this.sendKeyToElement(GetQuoteCarPageUI.ADDITIONAL_NAMED_DRIVER_FIELD, value);
+  }
+
+  async inputAdditionalNRIC(value) {
+    await this.sendKeyToElement(GetQuoteCarPageUI.ADDITIONAL_NRIC_FIELD, value);
+  }
+
+  async selectAdditionalDriverDOB() {
+    const currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() - 27);
+    const dateOfBirth = currentDate.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+    await this.clickToElement(GetQuoteCarPageUI.ADDITIONAL_DRIVER_DOB_FIELD);
+    await this.sendKeyToElement(GetQuoteCarPageUI.ADDITIONAL_DRIVER_DOB_FIELD, dateOfBirth);
+    await this.page.keyboard.press('Enter');
   }
 }
