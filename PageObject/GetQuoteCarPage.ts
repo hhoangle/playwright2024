@@ -234,4 +234,26 @@ export class GetQuoteCarPage extends BasePage {
     await this.sendKeyToElement(GetQuoteCarPageUI.ADDITIONAL_DRIVER_DOB_FIELD, dateOfBirth);
     await this.page.keyboard.press('Enter');
   }
+
+  async selectAdditionalDriverGender() {
+    await this.clickToElement(GetQuoteCarPageUI.ADDITIONAL_DRIVER_GENDER);
+    await this.page.keyboard.press('ArrowDown')
+    await this.page.keyboard.press('Enter')
+  }
+
+  async selectAdditionalDriverMaritalStatus() {
+    await this.clickToElement(GetQuoteCarPageUI.ADDITIONAL_DRIVER_MARITAL_STATUS_DROPDOWN);
+    await this.page.keyboard.press('ArrowDown')
+    await this.page.keyboard.press('Enter')
+  }
+
+  async selectAdditionalDriverDrivingExp() {
+    await this.clickToElement(GetQuoteCarPageUI.ADDITIONAL_DRIVER_DRIVING_EXP_DROPDOWN);
+    await this.page.keyboard.press('ArrowDown')
+    await this.page.keyboard.press('Enter')
+  }
+
+  async agreePrivacyPolicy() {
+    await this.clickToElement(GetQuoteCarPageUI.PRIVACY_POLICY_CHECKBOX);
+  }
 }

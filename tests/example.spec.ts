@@ -205,15 +205,29 @@ test.describe("Home Page Tests", () => {
       await getQuoteCarPage.inputAdditionalNamedDriver(CommonConst.ADDITIONAL_DRIVER_FULL_NAME);
     });
 
-    await test.step("Input NRIC/FIN", async () => {
+    await test.step("Input additional driver NRIC/FIN", async () => {
       await getQuoteCarPage.inputAdditionalNRIC(CommonConst.ADDITIONAL_DRIVER_NRIC_FIN);
     });
 
-    await test.step("Select DOB", async () => {
+    await test.step("Select additional driver DOB", async () => {
       await getQuoteCarPage.selectAdditionalDriverDOB();
     });
 
+    await test.step("Select additional driver gender", async () => {
+      await getQuoteCarPage.selectAdditionalDriverGender();
+    });
 
+    await test.step("Select additional driver marital status", async () => {
+      await getQuoteCarPage.selectAdditionalDriverMaritalStatus();
+    });
+
+    await test.step("Select additional driver driving exp", async () => {
+      await getQuoteCarPage.selectAdditionalDriverDrivingExp();
+    });
+
+    await test.step("Agree privacy policy", async () => {
+      await getQuoteCarPage.agreePrivacyPolicy();
+    });
     await getQuoteCarPage.page.waitForTimeout(10000);
   });
 });

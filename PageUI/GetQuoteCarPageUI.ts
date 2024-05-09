@@ -48,4 +48,13 @@ export class GetQuoteCarPageUI {
     public static ADDITIONAL_NRIC_FIELD: string = "//body/div[@id='__nuxt']/div[@id='__layout']/div[1]/div[2]/div[2]/div[1]/div[2]/div[1]/div[2]/div[6]/div[2]/div[1]/div[2]/div[1]/div[1]/input[1]"
     public static ADDITIONAL_DRIVER_DOB_FIELD: string = "//input[@placeholder='DD/MM/YYYY']"
     public static MARK_POINT_2: string = "//p[text()='Driving Experience']";
+    public static ADDITIONAL_DRIVER_GENDER: string = "//body/div[@id='__nuxt']/div[@id='__layout']/div[1]/div[2]/div[2]/div[1]/div[2]/div[1]/div[2]/div[6]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/input[1]";
+    public static ADDITIONAL_DRIVER_GENDER_OPTION: string = "ADDITIONAL_DRIVER_GENDER_OPTION";
+    public static ADDITIONAL_DRIVER_MARITAL_STATUS_DROPDOWN: string = "//div[6]//div[2]//div[1]//div[3]//div[2]//div[1]//div[1]//input[1]";
+    public static ADDITIONAL_DRIVER_MARITAL_STATUS_OPTION: string ="//div[@x-placement='bottom-start']//li[1]"
+    public static ADDITIONAL_DRIVER_DRIVING_EXP_DROPDOWN: string = `//input[@placeholder="Select Driver's Experience (Years)"]`
+    public static ADDITIONAL_DRIVER_DRIVING_EXP_OPTION: string = "//div[@x-placement='bottom-start']//li[1]"
+    public static PRIVACY_POLICY_CHECKBOX: string = "//input[@type='checkbox']"
+  
+  
   }
