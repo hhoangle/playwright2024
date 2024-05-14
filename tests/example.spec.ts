@@ -12,7 +12,7 @@ let page: Page;
 
 test.beforeEach(async () => {
   const browser = await chromium.launch({
-    headless: false,
+    headless: true,
     args: ["--start-maximized"],
   });
   browserContext = await browser.newContext();
