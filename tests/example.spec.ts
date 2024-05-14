@@ -10,7 +10,6 @@ let getQuoteCarPage: GetQuoteCarPage;
 let browserContext: BrowserContext;
 let page: Page;
 
-
 test.beforeEach(async () => {
   const browser = await chromium.launch({
     headless: false,
@@ -21,12 +20,11 @@ test.beforeEach(async () => {
   await page.setViewportSize({ width: 1920, height: 1080 });
   await Promise.all([
     page.waitForNavigation(), // The promise to wait for navigation
-    page.goto(CommonConst.UAT_URL) // The promise returned by page.goto()
+    page.goto(CommonConst.URL), // The promise returned by page.goto()
   ]);
   homePage = new HomePage(page);
   productPage = new ProductPage(page);
   getQuoteCarPage = new GetQuoteCarPage(page);
-  
 });
 
 test.describe("Home Page Tests", () => {
@@ -46,14 +44,14 @@ test.describe("Home Page Tests", () => {
 
   test("Get quote car - Comprehensive", async () => {
     let getQuoteData = {
-      vehicleMake : "",
-      vehicleModel : "",
-      policyStartDate : "",
-      policyEndDate : "",
-      dob : "",
+      vehicleMake: "",
+      vehicleModel: "",
+      policyStartDate: "",
+      policyEndDate: "",
+      dob: "",
       email: "",
       mobileNo: "",
-    }
+    };
 
     await test.step("Click on Product button", async () => {
       await homePage.clickProductButton();
@@ -84,7 +82,9 @@ test.describe("Home Page Tests", () => {
     });
 
     await test.step("Input Vehicle Registration Number", async () => {
-      await getQuoteCarPage.inputVehicleRegistrationNumber(CommonConst.VEHICLE_REGISTRATION_NUMBER);
+      await getQuoteCarPage.inputVehicleRegistrationNumber(
+        CommonConst.VEHICLE_REGISTRATION_NUMBER
+      );
     });
 
     await test.step("Select Policy Start Date", async () => {
@@ -100,7 +100,9 @@ test.describe("Home Page Tests", () => {
     });
 
     await test.step("Select Driving Experience", async () => {
-      await getQuoteCarPage.selectDrivingExperience(CommonConst.DRIVING_EXPERIENCE);
+      await getQuoteCarPage.selectDrivingExperience(
+        CommonConst.DRIVING_EXPERIENCE
+      );
     });
 
     await test.step("Select NCD", async () => {
@@ -149,7 +151,8 @@ test.describe("Home Page Tests", () => {
     let totalPremiumInAddOnPage: string;
 
     await test.step("Get Total Premium in Add-On Page", async () => {
-      totalPremiumInAddOnPage = await getQuoteCarPage.getTotalPremiumInAddOnPage();
+      totalPremiumInAddOnPage =
+        await getQuoteCarPage.getTotalPremiumInAddOnPage();
     });
 
     await test.step("Click on Continue", async () => {
@@ -157,10 +160,11 @@ test.describe("Home Page Tests", () => {
     });
 
     await test.step("Get Total Premium in Detail Page", async () => {
-      let totalPremiumDetailPage = await getQuoteCarPage.getTotalPremiumInDetailPage();
+      let totalPremiumDetailPage =
+        await getQuoteCarPage.getTotalPremiumInDetailPage();
       expect(totalPremiumInAddOnPage).toEqual(totalPremiumDetailPage);
     });
-    
+
     await test.step("Insert Chassis No.", async () => {
       await getQuoteCarPage.insertChassisNo(CommonConst.CHASSIS_NO);
     });
@@ -168,18 +172,20 @@ test.describe("Home Page Tests", () => {
     await test.step("Insert Engine No.", async () => {
       await getQuoteCarPage.insertEngineNo(CommonConst.ENGINE_NO);
     });
-    
+
     let hirePurchaseCompany: string;
     await test.step("Select hire purchase company", async () => {
-       hirePurchaseCompany = await getQuoteCarPage.selectHirePurchaseCompany();
-       console.log(hirePurchaseCompany);
+      hirePurchaseCompany = await getQuoteCarPage.selectHirePurchaseCompany();
+      console.log(hirePurchaseCompany);
     });
 
     await test.step("Input main driver full name", async () => {
-      getQuoteCarPage.inputMainDriverFullName(CommonConst.MAIN_DRIVER_FULL_NAME);
+      getQuoteCarPage.inputMainDriverFullName(
+        CommonConst.MAIN_DRIVER_FULL_NAME
+      );
       await getQuoteCarPage.page.waitForTimeout(1000);
     });
-    
+
     await test.step("Input NRIC/FIN", async () => {
       getQuoteCarPage.inputNRICFIN(CommonConst.NRIC_FIN_MAIN_DRIVER);
     });
@@ -202,11 +208,15 @@ test.describe("Home Page Tests", () => {
     });
 
     await test.step("Input additional named driver", async () => {
-      await getQuoteCarPage.inputAdditionalNamedDriver(CommonConst.ADDITIONAL_DRIVER_FULL_NAME);
+      await getQuoteCarPage.inputAdditionalNamedDriver(
+        CommonConst.ADDITIONAL_DRIVER_FULL_NAME
+      );
     });
 
     await test.step("Input additional driver NRIC/FIN", async () => {
-      await getQuoteCarPage.inputAdditionalNRIC(CommonConst.ADDITIONAL_DRIVER_NRIC_FIN);
+      await getQuoteCarPage.inputAdditionalNRIC(
+        CommonConst.ADDITIONAL_DRIVER_NRIC_FIN
+      );
     });
 
     await test.step("Select additional driver DOB", async () => {

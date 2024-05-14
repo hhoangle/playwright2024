@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "action.js",
-  "scripts": {},
+  "scripts": {"install-all": "npm i && npx playwright install"},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
     "jest-stare": "^2.5.1"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "faker": "^5.5.3"
   }
 }

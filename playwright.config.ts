@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 import { testPlanFilter } from "allure-playwright/dist/testplan";
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config();
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -21,30 +24,37 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 5 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  
+
   grep: testPlanFilter(),
-  reporter: [["line"], [
-    "allure-playwright",
-    {
-      detail: true,
-      outputFolder: "allure-results",
-      suiteTitle: true,
-      categories: [
-        {
-          name: "Outdated tests",
-          messageRegex: ".*FileNotFound.*",
+  reporter: [
+    ["line"],
+    [
+      "allure-playwright",
+      {
+        detail: true,
+        outputFolder: "allure-results",
+        suiteTitle: true,
+        categories: [
+          {
+            name: "Outdated tests",
+            messageRegex: ".*FileNotFound.*",
+          },
+        ],
+        environmentInfo: {
+          framework: "playwright",
         },
-      ],
-      environmentInfo: {
-        framework: "playwright",
       },
-    },
-  ], ["jest-stare"],['html', { open: 'always' }]],
+    ],
+    ["jest-stare"],
+    ["html", { open: "always" }],
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-    screenshot: 'only-on-failure',
+    screenshot: "only-on-failure",
+    baseURL:
+      process.env.ENV === "dev" ? process.env.DEV_URL : process.env.UAT_URL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
